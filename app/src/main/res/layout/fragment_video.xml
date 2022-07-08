@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageViewAvatar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="15dp"
+        android:src="@drawable/user"/>
+
+    <ImageButton
+        android:id="@+id/imageButtonLike"
+        style="@style/ButtonVideoItem"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_like"/>
+
+    <TextView
+        android:id="@+id/textViewLikesCount"
+        style="@style/TextRightVideo"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textAlignment="center"/>
+
+    <ImageButton
+        android:id="@+id/imageButtonComment"
+        style="@style/ButtonVideoItem"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_comments"/>
+
+    <TextView
+        android:id="@+id/textViewCommentsCount"
+        style="@style/TextRightVideo"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textAlignment="center" />
+
+    <ImageButton
+        android:id="@+id/imageButtonReply"
+        style="@style/ButtonVideoItem"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_reply"/>
+
+    <TextView
+        android:id="@+id/textViewRepliesCount"
+        style="@style/TextRightVideo"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textAlignment="center"/>
+
+</LinearLayout>

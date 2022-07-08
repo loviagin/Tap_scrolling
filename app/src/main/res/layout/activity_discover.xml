@@ -6,4 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".activities.DiscoverActivity">
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <include
+        layout="@layout/ts_bottom_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,14 @@
 package ru.loviagin.tapscrolling.activities;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -22,7 +27,6 @@ import java.util.List;
 
 import ru.loviagin.tapscrolling.R;
 import ru.loviagin.tapscrolling.adapters.VideoAdapter;
-import ru.loviagin.tapscrolling.data.Comment;
 import ru.loviagin.tapscrolling.data.Video;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,11 +37,13 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPager2 viewPagerVideos;
     private ProgressBar progressBar;
+    private TextView textViewForYou, textViewSubscriptions;
 
     private VideoAdapter adapter;
     private List<Video> videos;
 
     private int VIDEOS_COUNT = 10;
+    private boolean isStart = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,34 +55,56 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        //docRef = db.collection("videos").document("fef");
 
         viewPagerVideos = findViewById(R.id.viewPagerVideos);
+        textViewForYou = findViewById(R.id.textViewForYou);
+        textViewSubscriptions = findViewById(R.id.textViewSubscriptions);
 
         videos = new ArrayList<>();
-        List<Comment> comments = new ArrayList<>();
-        Comment comment = new Comment();
-        comments.add(comment);
         adapter = new VideoAdapter();
         progressBar = findViewById(R.id.progressBar);
+        viewPagerVideos.setAdapter(adapter);
+//
+//        progressBar.setVisibility(View.VISIBLE);
+//        progressBar.setVisibility(View.INVISIBLE);
 
+        //здесь Для Вас и Подписки
+//        textViewSubscriptions.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(MainActivity.this, "Subscriptions", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        textViewForYou.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(MainActivity.this, "For you", Toast.LENGTH_SHORT).show();
+//            }
+//        });
         progressBar.setVisibility(View.VISIBLE);
-        db.collection("videos").orderBy("id").addSnapshotListener((value, error) -> {
-            if (value != null) {
-                for (int i = 0; i < 10; i++) {
-                    Video video = new Video(value.getDocuments().get(i).get("video_url").toString());
-                    Log.i("MYTAG5", "THERE is here");
-                    adapter.addVideo(video);
-                    Log.i("MYTAG2", value.getDocuments().get(i).get("video_url").toString());
-                   // Log.i("MYTAG3", String.valueOf(Integer.parseInt(value.getDocuments().get(i).get("id").toString())));
-                }
-            }
-        });
+        for (int i = 0; i < 10; i++) {
+            Video video = new Video(getRandomInt());
+            Toast.makeText(this, "Int  " + i + ", Video " + video.getVideo_url(), Toast.LENGTH_SHORT).show();
+//            Log.i("TAG2365", "Int  " + i + ", Video " + video.getVideo_url());
+            /*while (video.isReady() != 1){
+
+            }*/
+            adapter.addVideo(video);
+            adapter.notifyDataSetChanged();
+            //adapter.notifyItemInserted(adapter.getItemCount() - 1);
+        }
         progressBar.setVisibility(View.INVISIBLE);
+        Log.i("TAG2365", "VIDEO COUNT " + VIDEOS_COUNT);
         //adapter.setVideos(videos);
 
-        viewPagerVideos.setAdapter(adapter);
     }
+
+    //    private void addVideo(String video_url){
+//        Video video = new Video(video_url);
+//        Log.i("MYTAG5", "THERE is here");
+//        adapter.addVideo(video);
+//        Log.i("MYTAG2", video_url);
+//    }
 
     @Override
     public void onStart() {
@@ -94,10 +122,24 @@ public class MainActivity extends AppCompatActivity {
         db.collection("videos").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (value != null) {
-                    VIDEOS_COUNT = value.size();
+                VIDEOS_COUNT = 0;
+                if (error != null) {
+                    Log.w(TAG, "Listen failed.", error);
+                    try {
+                        throw new Exception("Ошибка обновления количества видео");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-                //Toast.makeText(MainActivity.this, "count + " + VIDEOS_COUNT, Toast.LENGTH_SHORT).show();
+                ArrayList<Integer> integers = new ArrayList<>();
+                for (QueryDocumentSnapshot doc : value) {
+                    if (doc.get("name") != null) {
+                        VIDEOS_COUNT++;
+                        integers.add(Integer.parseInt(doc.get("likes_count").toString()));
+                    }
+                }
+                Log.i("integers", String.valueOf(integers));
+
             }
         });
     }
