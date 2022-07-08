@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/videoView"
+        app:layout_constraintEnd_toEndOf="@id/videoView"
+        app:layout_constraintTop_toTopOf="@id/videoView">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:src="@drawable/user" />
+
+        <ImageButton
+            android:id="@+id/imageButtonLike"
+            style="@style/ButtonVideoItem"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_like" />
+
+        <TextView
+            android:id="@+id/textViewLikesCount"
+            style="@style/TextRightVideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0" />
+
+        <ImageButton
+            android:id="@+id/imageButtonComment"
+            style="@style/ButtonVideoItem"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_comments" />
+
+        <TextView
+            android:id="@+id/textViewCommentsCount"
+            style="@style/TextRightVideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0" />
+
+        <ImageButton
+            android:id="@+id/imageButtonReply"
+            style="@style/ButtonVideoItem"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_reply" />
+
+        <TextView
+            android:id="@+id/textViewRepliesCount"
+            style="@style/TextRightVideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0" />
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

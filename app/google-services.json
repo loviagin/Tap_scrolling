@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1051061850060",
+    "project_id": "tap-scrolling",
+    "storage_bucket": "tap-scrolling.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1051061850060:android:f86cf5601bad9bbacc1769",
+        "android_client_info": {
+          "package_name": "ru.loviagin.tapscrolling"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1051061850060-vulp3kd2hj3bl9b9bc8k7tudti8365gp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.loviagin.tapscrolling",
+            "certificate_hash": "9c2690d5e1c4287ea39d383de2aba264b7755487"
+          }
+        },
+        {
+          "client_id": "1051061850060-njfe1f1ol9jt1krinnh8j12p70hi39rt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZuwqqSN9qouEPggxOzOgoOU8IYVDho3c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1051061850060-njfe1f1ol9jt1krinnh8j12p70hi39rt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
