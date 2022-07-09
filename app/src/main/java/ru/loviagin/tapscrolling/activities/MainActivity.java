@@ -3,6 +3,7 @@ package ru.loviagin.tapscrolling.activities;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,12 +11,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -53,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
 
+
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
@@ -64,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new VideoAdapter();
         progressBar = findViewById(R.id.progressBar);
         viewPagerVideos.setAdapter(adapter);
+        progressBar.setVisibility(View.VISIBLE);
 //
 //        progressBar.setVisibility(View.VISIBLE);
 //        progressBar.setVisibility(View.INVISIBLE);
@@ -81,22 +88,11 @@ public class MainActivity extends AppCompatActivity {
 //                Toast.makeText(MainActivity.this, "For you", Toast.LENGTH_SHORT).show();
 //            }
 //        });
-        progressBar.setVisibility(View.VISIBLE);
-        for (int i = 0; i < 10; i++) {
-            Video video = new Video(getRandomInt());
-            Toast.makeText(this, "Int  " + i + ", Video " + video.getVideo_url(), Toast.LENGTH_SHORT).show();
-//            Log.i("TAG2365", "Int  " + i + ", Video " + video.getVideo_url());
-            /*while (video.isReady() != 1){
 
-            }*/
-            adapter.addVideo(video);
-            adapter.notifyDataSetChanged();
-            //adapter.notifyItemInserted(adapter.getItemCount() - 1);
-        }
-        progressBar.setVisibility(View.INVISIBLE);
-        Log.i("TAG2365", "VIDEO COUNT " + VIDEOS_COUNT);
+
+      //  Log.i("TAG2365", "VIDEO COUNT " + VIDEOS_COUNT);
         //adapter.setVideos(videos);
-
+       // adapter.notifyDataSetChanged();
     }
 
     //    private void addVideo(String video_url){
@@ -109,6 +105,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+
+        for (int i = 0; i < 2; i++) {
+            Video video = new Video(getRandomInt());
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            adapter.addVideo(video);
+            adapter.notifyItemInserted(adapter.getItemCount() - 1);
+        }
+        progressBar.setVisibility(View.INVISIBLE);
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
@@ -119,33 +127,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        db.collection("videos").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+        db.collection("videos").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
                 VIDEOS_COUNT = 0;
-                if (error != null) {
-                    Log.w(TAG, "Listen failed.", error);
-                    try {
-                        throw new Exception("Ошибка обновления количества видео");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                for (DocumentSnapshot document : task.getResult()) {
+                    VIDEOS_COUNT++;
                 }
-                ArrayList<Integer> integers = new ArrayList<>();
-                for (QueryDocumentSnapshot doc : value) {
-                    if (doc.get("name") != null) {
-                        VIDEOS_COUNT++;
-                        integers.add(Integer.parseInt(doc.get("likes_count").toString()));
-                    }
-                }
-                Log.i("integers", String.valueOf(integers));
-
+            } else {
+                Log.d(TAG, "Error getting documents: ", task.getException());
             }
         });
     }
 
+//    class getFirstData extends AsyncTask<Integer[], Void, Integer>{
+//        @Override
+//        protected Integer doInBackground(Integer[]... integers) {
+//
+//            return null;
+//        }
+//    }
+
     private int getRandomInt() {
-        return (int) (Math.random() * ++VIDEOS_COUNT);
+        return (int) (Math.random() * VIDEOS_COUNT);
     }
 
     public void onHomeClick(View view) {

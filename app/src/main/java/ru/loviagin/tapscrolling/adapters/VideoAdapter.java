@@ -60,7 +60,24 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     public void onBindViewHolder(@NonNull VideoViewHolder holder, int position) {
 
         Video video = videos.get(position);
-        holder.textViewLikesCount.setText(String.valueOf(video.getLikes_count()));
+        int likes_count = video.getLikes_count();
+        if (likes_count >= 1000 && likes_count < 1000000){
+            double count = (double) likes_count / 1000;
+            if (likes_count % 1000 == 0){
+                holder.textViewLikesCount.setText(String.format("%sК", (int) count));
+            }else {
+                holder.textViewLikesCount.setText(String.format("%sК", count));
+            }
+
+        } else if (likes_count >= 1000000){
+            double count = (double) likes_count / 1000000;
+            holder.textViewLikesCount.setText(String.format("%sМ", count));
+        } else {
+            holder.textViewLikesCount.setText(String.valueOf(likes_count));
+        }
+
+        Toast.makeText(holder.itemView.getContext(), ""+video.getVideo_id(), Toast.LENGTH_SHORT).show();
+
 //        holder.textViewCommentsCount.setText(String.valueOf(video.getComments_array().get(position).getCountOfComments()));
 //        holder.textViewRepliesCount.setText(video.getReply());
 
