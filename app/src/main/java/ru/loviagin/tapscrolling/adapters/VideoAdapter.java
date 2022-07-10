@@ -2,7 +2,6 @@ package ru.loviagin.tapscrolling.adapters;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -20,12 +19,24 @@ import ru.loviagin.tapscrolling.data.Video;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
     private List<Video> videos;
-   // private OnVideoClickListener onVideoClickListener;
+    private OnVideoClickListener onVideoClickListener;
+    private OnReachEndListener onReachEndListener;
 
+    public OnReachEndListener getOnReachEndListener() {
+        return onReachEndListener;
+    }
 
-//    public void setOnVideoClickListener(OnVideoClickListener onVideoClickListener) {
-//        this.onVideoClickListener = onVideoClickListener;
-//    }
+    public void setOnReachEndListener(OnReachEndListener onReachEndListener) {
+        this.onReachEndListener = onReachEndListener;
+    }
+
+    public int getAdapterItemPosition() {
+        return getAdapterItemPosition();
+    }
+
+    public void setOnVideoClickListener(OnVideoClickListener onVideoClickListener) {
+        this.onVideoClickListener = onVideoClickListener;
+    }
 
     public VideoAdapter() {
         videos = new ArrayList<>();
@@ -49,6 +60,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
     }
 
+    public interface OnReachEndListener {
+        void onReachEnd();
+    }
+
     @NonNull
     @Override
     public VideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -61,22 +76,23 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
         Video video = videos.get(position);
         int likes_count = video.getLikes_count();
-        if (likes_count >= 1000 && likes_count < 1000000){
+        if (likes_count >= 1000 && likes_count < 1000000) {
             double count = (double) likes_count / 1000;
-            if (likes_count % 1000 == 0){
+            if (likes_count % 1000 == 0) {
                 holder.textViewLikesCount.setText(String.format("%sК", (int) count));
-            }else {
+            } else {
                 holder.textViewLikesCount.setText(String.format("%sК", count));
             }
 
-        } else if (likes_count >= 1000000){
+        } else if (likes_count >= 1000000) {
             double count = (double) likes_count / 1000000;
             holder.textViewLikesCount.setText(String.format("%sМ", count));
         } else {
             holder.textViewLikesCount.setText(String.valueOf(likes_count));
         }
 
-        Toast.makeText(holder.itemView.getContext(), ""+video.getVideo_id(), Toast.LENGTH_SHORT).show();
+
+        //    Toast.makeText(holder.itemView.getContext(), ""+video.getVideo_id(), Toast.LENGTH_SHORT).show();
 
 //        holder.textViewCommentsCount.setText(String.valueOf(video.getComments_array().get(position).getCountOfComments()));
 //        holder.textViewRepliesCount.setText(video.getReply());
@@ -131,6 +147,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 }
                 return false;
             });
+
 
          /*   imageButtonLike.setOnClickListener(new View.OnClickListener() {
                 @Override

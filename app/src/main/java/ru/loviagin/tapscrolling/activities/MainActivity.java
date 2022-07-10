@@ -11,24 +11,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import ru.loviagin.tapscrolling.R;
 import ru.loviagin.tapscrolling.adapters.VideoAdapter;
@@ -49,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int VIDEOS_COUNT = 10;
     private boolean isStart = false;
+    static int mPageLastScreen = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +83,29 @@ public class MainActivity extends AppCompatActivity {
 //                Toast.makeText(MainActivity.this, "For you", Toast.LENGTH_SHORT).show();
 //            }
 //        });
+//        viewPagerVideos.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+//                try {
+//                    Video video = new downloadData().execute(getRandomInt()).get();
+//                    adapter.addVideo(video);
+//                } catch (ExecutionException | InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                Toast.makeText(MainActivity.this, "i here", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//                if (!viewPagerVideos.canScrollHorizontally(1)) {
+//                    //adapter.addVideo(new downloadData().doInBackground(getRandomInt()));
+//                }
 
 
-      //  Log.i("TAG2365", "VIDEO COUNT " + VIDEOS_COUNT);
+        //  Log.i("TAG2365", "VIDEO COUNT " + VIDEOS_COUNT);
         //adapter.setVideos(videos);
-       // adapter.notifyDataSetChanged();
+        // adapter.notifyDataSetChanged();
+
+
     }
 
     //    private void addVideo(String video_url){
@@ -106,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             Video video = new Video(getRandomInt());
             try {
                 Thread.sleep(500);
@@ -121,7 +134,9 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             // Здесь мы зарегистрированы
+
         }
+
     }
 
     @Override
@@ -139,13 +154,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    class getFirstData extends AsyncTask<Integer[], Void, Integer>{
-//        @Override
-//        protected Integer doInBackground(Integer[]... integers) {
-//
-//            return null;
-//        }
-//    }
+    static class downloadData extends AsyncTask<Integer, Void, Video> {
+
+        @Override
+        protected Video doInBackground(Integer... integers) {
+            Video video = new Video(integers[0]);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            return video;
+        }
+    }
 
     private int getRandomInt() {
         return (int) (Math.random() * VIDEOS_COUNT);

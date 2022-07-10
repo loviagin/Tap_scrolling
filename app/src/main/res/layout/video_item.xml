@@ -41,6 +41,7 @@
             style="@style/TextRightVideo"
             android:layout_height="wrap_content"
             android:text="0"
+
             android:textAlignment="center" />
 
         <ImageButton
@@ -54,6 +55,7 @@
             style="@style/TextRightVideo"
             android:layout_height="wrap_content"
             android:text="0"
+            android:visibility="gone"
             android:textAlignment="center" />
 
         <ImageButton
@@ -67,6 +69,7 @@
             style="@style/TextRightVideo"
             android:layout_height="wrap_content"
             android:text="0"
+            android:visibility="gone"
             android:textAlignment="center" />
 
     </LinearLayout>
