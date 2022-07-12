@@ -1,9 +1,12 @@
 package ru.loviagin.tapscrolling.adapters;
 
 import android.annotation.SuppressLint;
+import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -15,28 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.loviagin.tapscrolling.R;
+import ru.loviagin.tapscrolling.data.Comment;
 import ru.loviagin.tapscrolling.data.Video;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
     private List<Video> videos;
-    private OnVideoClickListener onVideoClickListener;
-    private OnReachEndListener onReachEndListener;
+   // private Video video;
+    //  private OnVideoClickListener onVideoClickListener;
 
-    public OnReachEndListener getOnReachEndListener() {
-        return onReachEndListener;
-    }
-
-    public void setOnReachEndListener(OnReachEndListener onReachEndListener) {
-        this.onReachEndListener = onReachEndListener;
-    }
-
-    public int getAdapterItemPosition() {
-        return getAdapterItemPosition();
-    }
-
-    public void setOnVideoClickListener(OnVideoClickListener onVideoClickListener) {
-        this.onVideoClickListener = onVideoClickListener;
-    }
+//    public void setOnVideoClickListener(OnVideoClickListener onVideoClickListener) {
+//        this.onVideoClickListener = onVideoClickListener;
+//    }
 
     public VideoAdapter() {
         videos = new ArrayList<>();
@@ -48,21 +40,34 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
     public void addVideo(Video video) {
         videos.add(video);
-        notifyItemInserted(getItemCount() - 1);
+        //notifyItemInserted(getItemCount() - 1);
     }
 
-    public interface OnVideoClickListener {
-//          void onLikeClick();
+    public void addVideo(
+            int videoId,
+            String video_url,
+            int video_id,
+            int user_id,
+            int replies_count,
+            int likes_count,
+            int video_views,
+            List<Comment> comments_array
+            ) {
+        videos.add(new Video(video_url, video_id, user_id, replies_count, likes_count, video_views, comments_array));
+        notifyItemInserted(getItemCount() - 1);
+    }
+    // public interface OnVideoClickListener {
+    //         void onLikeClick();
 //
 //          void onCommentClick();
 //
 //          void onReplyClick();
 
-    }
+    //  }
 
-    public interface OnReachEndListener {
-        void onReachEnd();
-    }
+//    public Video getVideo() {
+//        return video;
+//    }
 
     @NonNull
     @Override
@@ -90,12 +95,16 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         } else {
             holder.textViewLikesCount.setText(String.valueOf(likes_count));
         }
-
-
-        //    Toast.makeText(holder.itemView.getContext(), ""+video.getVideo_id(), Toast.LENGTH_SHORT).show();
+        holder.textViewRepliesCount.setText(String.valueOf(video.getReplies_count()));
+        holder.imageButtonLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                video.addLike(holder.imageButtonLike);
+                // holder.itemView.startAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.shake));
+            }
+        });
 
 //        holder.textViewCommentsCount.setText(String.valueOf(video.getComments_array().get(position).getCountOfComments()));
-//        holder.textViewRepliesCount.setText(video.getReply());
 
 
         try {
@@ -104,6 +113,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 video.addVideoView();
                 holder.videoView.start();
             });
+
             holder.videoView.start();
         } catch (Exception e) {
             Toast.makeText(holder.itemView.getContext(), "Error: " + e, Toast.LENGTH_SHORT).show();
@@ -120,9 +130,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         private final VideoView videoView;
         boolean isStart = true;
         private TextView textViewLikesCount;
-//        private TextView textViewCommentsCount;
-//        private TextView textViewRepliesCount;
-//        private ImageButton imageButtonLike;
+        //        private TextView textViewCommentsCount;
+        private TextView textViewRepliesCount;
+        private ImageButton imageButtonLike;
 //        private ImageButton imageButtonComment;
 //        private ImageButton imageButtonReply;
 
@@ -132,9 +142,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             videoView = itemView.findViewById(R.id.videoView);
 //            textViewCommentsCount = itemView.findViewById(R.id.textViewCommentsCount);
             textViewLikesCount = itemView.findViewById(R.id.textViewLikesCount);
-//            textViewRepliesCount = itemView.findViewById(R.id.textViewRepliesCount);
+            textViewRepliesCount = itemView.findViewById(R.id.textViewRepliesCount);
 //            imageButtonComment = imageButtonLike.findViewById(R.id.imageButtonComment);
-//            imageButtonLike = itemView.findViewById(R.id.imageButtonLike);
+            imageButtonLike = itemView.findViewById(R.id.imageButtonLike);
 //            imageButtonReply = itemView.findViewById(R.id.imageButtonReply);
 
             videoView.setOnTouchListener((v, event) -> {
@@ -149,14 +159,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             });
 
 
-         /*   imageButtonLike.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onVideoClickListener != null) {
-                        onVideoClickListener.onLikeClick();
-                    }
+           /* imageButtonLike.setOnClickListener(v -> {
+                if (onVideoClickListener != null) {
+                    onVideoClickListener.onLikeClick();
                 }
             });
+
 
             imageButtonComment.setOnClickListener(new View.OnClickListener() {
                 @Override

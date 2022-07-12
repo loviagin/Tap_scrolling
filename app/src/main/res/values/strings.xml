@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Tap scrolling</string>
+    <string name="avatar_text">Аватарка</string>
+    <string name="like_text">Лайк</string>
+    <string name="comments_text">Комментарии</string>
+    <string name="share_text">Поделиться</string>
 </resources>
