@@ -43,8 +43,7 @@ public class Video {
         updateDocument("likes_count", likes_count);
     }
 
-    public Video(VideoAdapter adapter, ViewPager2 viewPager, ProgressBar progressBar) {
-        progressBar.setVisibility(View.VISIBLE);
+    public Video(VideoAdapter adapter, ViewPager2 viewPager) {
         for (int i = 0; i < 3; i++) {
             this.video_id = IntelligentVideo.getRandomInt();
             docRef = db.collection("videos").document(String.valueOf(video_id));
@@ -84,13 +83,11 @@ public class Video {
                 }
             });
         }
-        progressBar.setVisibility(View.INVISIBLE);
-        if (MainActivity.isFirst()){
+        if (MainActivity.isFirst()) {
             viewPager.setAdapter(adapter);
             //Log.i("page scrolled", "i tuta");
             MainActivity.setFirst(false);
         }
-
     }
 
     private void updateDocument(String field, int count) {

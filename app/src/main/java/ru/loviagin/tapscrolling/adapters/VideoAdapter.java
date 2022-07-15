@@ -23,6 +23,7 @@ import ru.loviagin.tapscrolling.data.Video;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
     private List<Video> videos;
+    private ProgressBar progressBar;
    // private Video video;
     //  private OnVideoClickListener onVideoClickListener;
 
@@ -30,8 +31,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 //        this.onVideoClickListener = onVideoClickListener;
 //    }
 
-    public VideoAdapter() {
+    public VideoAdapter(ProgressBar progressBar) {
         videos = new ArrayList<>();
+        this.progressBar = progressBar;
     }
 
     public void setVideos(List<Video> videos) {
@@ -113,7 +115,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 video.addVideoView();
                 holder.videoView.start();
             });
-
+            progressBar.setVisibility(View.INVISIBLE);
             holder.videoView.start();
         } catch (Exception e) {
             Toast.makeText(holder.itemView.getContext(), "Error: " + e, Toast.LENGTH_SHORT).show();

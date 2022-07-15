@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
         videos = new ArrayList<>();
-        adapter = new VideoAdapter();
+        adapter = new VideoAdapter(progressBar);
 
         progressBar.setVisibility(View.VISIBLE);
 //
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-        new Video(adapter, viewPagerVideos, progressBar);
+        new Video(adapter, viewPagerVideos);
 
         viewPagerVideos.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 if(mPageLastScreen!=position)
                 {
                     Log.d("page scrolled", "Page scrolled");
-                    new Video(adapter, viewPagerVideos, progressBar);
+                    new Video(adapter, viewPagerVideos);
                     mPageLastScreen=position;
                 }
             }
