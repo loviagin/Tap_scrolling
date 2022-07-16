@@ -26,9 +26,10 @@ public class Video {
     private int replies_count = 0;
     private int likes_count = 0;
     private int video_views = 0;
+    private String avatar_url = null;
     private List<Comment> comments_array;
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference docRef;
 
     public void addVideoView() {
@@ -72,7 +73,10 @@ public class Video {
                             comments_array = (List<Comment>) document.getData().get("comments_array");
                         } catch (Exception ignored) {
                         }
-                        adapter.addVideo(video_id, video_url, video_id, user_id, replies_count, likes_count, video_views, comments_array);
+                        try {
+                            avatar_url = document.getData().get("avatar_url").toString();
+                        }catch (Exception ignored){}
+                        adapter.addVideo(video_id, video_url, video_id, user_id, replies_count, likes_count, video_views, comments_array, avatar_url);
 
                         Log.i("TAG2365", "Ready");
                     } else {
@@ -85,7 +89,6 @@ public class Video {
         }
         if (MainActivity.isFirst()) {
             viewPager.setAdapter(adapter);
-            //Log.i("page scrolled", "i tuta");
             MainActivity.setFirst(false);
         }
     }
@@ -99,7 +102,7 @@ public class Video {
                 .addOnFailureListener(e -> Log.w(TAG, "Error updating document", e));
     }
 
-    public Video(String video_url, int video_id, int user_id, int replies_count, int likes_count, int video_views, List<Comment> comments_array) {
+    public Video(String video_url, int video_id, int user_id, int replies_count, int likes_count, int video_views, List<Comment> comments_array, String avatar_url) {
         this.video_url = video_url;
         this.video_id = video_id;
         this.user_id = user_id;
@@ -107,6 +110,7 @@ public class Video {
         this.likes_count = likes_count;
         this.video_views = video_views;
         this.comments_array = comments_array;
+        this.avatar_url = avatar_url;
     }
 
     public int getVideo_id() {
@@ -163,5 +167,13 @@ public class Video {
 
     public void setComments_array(List<Comment> comments_array) {
         this.comments_array = comments_array;
+    }
+
+    public String getAvatar_url() {
+        return avatar_url;
+    }
+
+    public void setAvatar_url(String avatar_url) {
+        this.avatar_url = avatar_url;
     }
 }

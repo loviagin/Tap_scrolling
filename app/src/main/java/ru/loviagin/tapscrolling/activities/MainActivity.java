@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -36,11 +37,14 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView textViewForYou;
     private TextView textViewSubscriptions;
+    private VideoView videoView;
 
     private VideoAdapter adapter;
     private List<Video> videos;
-    static int mPageLastScreen=0;
+
+    static int mPageLastScreen = 0;
     private static boolean isFirst = true;
+    private static boolean isRegistered = false;
 
 //    private int VIDEOS_COUNT = 10;
 
@@ -54,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        isRegister();
 
         viewPagerVideos = findViewById(R.id.viewPagerVideos);
         textViewForYou = findViewById(R.id.textViewForYou);
@@ -61,13 +66,9 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
         videos = new ArrayList<>();
-        adapter = new VideoAdapter(progressBar);
+        adapter = new VideoAdapter(progressBar, this);
 
         progressBar.setVisibility(View.VISIBLE);
-//
-//        progressBar.setVisibility(View.VISIBLE);
-//        progressBar.setVisibility(View.INVISIBLE);
-
         //здесь Для Вас и Подписки
 //        textViewSubscriptions.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -103,13 +104,26 @@ public class MainActivity extends AppCompatActivity {
         return isFirst;
     }
 
+    public static boolean isRegistered() {
+        return isRegistered;
+    }
+
     public static void setFirst(boolean first) {
         isFirst = first;
+    }
+
+    private void isRegister() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            isRegistered = true;
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
+
+        isRegister();
 
         new Video(adapter, viewPagerVideos);
 
@@ -117,58 +131,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-
-                if(mPageLastScreen!=position)
-                {
-                    Log.d("page scrolled", "Page scrolled");
-                    new Video(adapter, viewPagerVideos);
-                    mPageLastScreen=position;
+                videoView = findViewById(R.id.videoView);
+                if (mPageLastScreen < position) {
+                    Log.d("page scrolled", "Page scrolled down");
+                    Thread thread = new Thread(() -> new Video(adapter, viewPagerVideos));
+                    thread.start();
+                } else {
+                    Log.d("page scrolled", "Page scrolled back");
                 }
+                videoView.start();
+                mPageLastScreen = position;
             }
         });
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            // Здесь мы зарегистрированы
-        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         updateVideoCount();
+        try {
+            videoView.start();
+        } catch (Exception ignored) {
+        }
+
     }
 
-//    class starting extends AsyncTaskLoader<Integer> {
-//
-//        public starting(@NonNull Context context) {
-//            super(context);
-//        }
-//
-//        @Nullable
-//        @Override
-//        public Integer loadInBackground() {
-//
-//            return null;
-//        }
-//    }
-//
-//    static class downloadData extends AsyncTask<Integer, Void, Video> {
-//
-//        @Override
-//        protected Video doInBackground(Integer... integers) {
-//            Video video = new Video(integers[0]);
-//            try {
-//                Thread.sleep(500);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//
-//            return video;
-//        }
-//    }
-
-    public void updateVideoCount(){
+    public void updateVideoCount() {
         db.collection("videos").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 int VIDEOS_COUNT = 0;
@@ -197,6 +185,4 @@ public class MainActivity extends AppCompatActivity {
     public void onProfileClick(View view) {
         startActivity(new Intent(this, ProfileActivity.class));
     }
-
-
 }

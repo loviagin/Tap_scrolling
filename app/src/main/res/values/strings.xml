@@ -4,4 +4,12 @@
     <string name="like_text">Лайк</string>
     <string name="comments_text">Комментарии</string>
     <string name="share_text">Поделиться</string>
+    <string name="register_text">Регистрация</string>
+    <string name="google_text">Продолжить с Google</string>
+    <string name="phone_register_text">Регистрация по телефону</string>
+    <string name="vk_text">Продолжить через ВК</string>
+    <string name="email_register_text">Регистрация по почте</string>
+    <string name="email_enter_text">Введите свой email</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="password_text">Придумайте пароль</string>
 </resources>
