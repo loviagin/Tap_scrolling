@@ -19,15 +19,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -35,7 +30,7 @@ import com.squareup.picasso.Picasso;
 import java.util.Objects;
 
 import ru.loviagin.tapscrolling.R;
-import ru.loviagin.tapscrolling.data.User;
+import ru.loviagin.tapscrolling.objects.User;
 
 public class RegisterContinueActivity extends AppCompatActivity {
 
@@ -46,13 +41,13 @@ public class RegisterContinueActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference reference;
 
-    private String avatar_url;
+    private String avatar_url = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_continue);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
 
@@ -67,33 +62,31 @@ public class RegisterContinueActivity extends AppCompatActivity {
     public void onClickRegister(View view) {
         Intent intent = getIntent();
         String email = "";
-        String pass = "";
-        if (intent.hasExtra("email") && intent.hasExtra("password")) {
+        String phone = "";
+        if (intent.hasExtra("email")) {
             email = intent.getStringExtra("email");
-            pass = intent.getStringExtra("password");
+        }
+        if (intent.hasExtra("email")) {
+            phone = intent.getStringExtra("phone");
         }
         String finalEmail = email;
-        String finalPass = pass;
+        String finalPhone = phone;
         db.collection("users")
                 .whereEqualTo("username", editTextUsername.getText().toString().trim())
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         int count = 0;
-                      //  Log.i("TAG3545", "" + count);
+                        //  Log.i("TAG3545", "" + count);
                         for (DocumentSnapshot document : task.getResult()) {
                             count++;
-                     //       Log.i("TAG3545", "" + document);
+                            //       Log.i("TAG3545", "" + document);
                         }
                         if (count == 0) {
-                            if (!editTextUsername.getText().toString().trim().isEmpty() && avatar_url == null) {
-                                createAccount(finalEmail, null, editTextUsername.getText().toString().trim(), finalPass);
-                            } else if (editTextUsername.getText().toString().trim().isEmpty() && avatar_url != null) {
-                                createAccount(finalEmail, avatar_url, "user", finalPass);
-                            } else if (editTextUsername.getText().toString().trim().isEmpty() && avatar_url == null) {
-                                createAccount(finalEmail, null, "user", finalPass);
+                            if (editTextUsername.getText().toString().trim().isEmpty()) {
+                                createAccount(finalEmail, avatar_url, "user", finalPhone);
                             } else {
-                                createAccount(finalEmail, avatar_url, editTextUsername.getText().toString().trim(), finalPass);
+                                createAccount(finalEmail, avatar_url, editTextUsername.getText().toString().trim(), finalPhone);
                             }
 
                             startActivity(new Intent(RegisterContinueActivity.this, MainActivity.class));
@@ -107,11 +100,13 @@ public class RegisterContinueActivity extends AppCompatActivity {
 
     }
 
-    private void createAccount(String email, String avatar_url, String username, String pass) {
-        db.collection("users").add(new User(email, avatar_url, username, pass)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+    private void createAccount(String email, String avatar_url, String username, String phone) {
+        User user = new User(email, avatar_url, username, phone);
+        Log.i("TAG3545", "" + user);
+        db.collection("users").add(user).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
-
+                Log.i("exc", "Created account");
             }
         });
     }

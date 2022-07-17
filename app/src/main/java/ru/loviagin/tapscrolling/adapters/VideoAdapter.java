@@ -27,8 +27,8 @@ import java.util.List;
 import ru.loviagin.tapscrolling.R;
 import ru.loviagin.tapscrolling.activities.MainActivity;
 import ru.loviagin.tapscrolling.activities.AuthorizeActivity;
-import ru.loviagin.tapscrolling.data.Comment;
-import ru.loviagin.tapscrolling.data.Video;
+import ru.loviagin.tapscrolling.objects.Comment;
+import ru.loviagin.tapscrolling.objects.Video;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
     private List<Video> videos;

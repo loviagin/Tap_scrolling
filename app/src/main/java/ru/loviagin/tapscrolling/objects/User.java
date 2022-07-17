@@ -1,17 +1,17 @@
-package ru.loviagin.tapscrolling.data;
+package ru.loviagin.tapscrolling.objects;
 
 public class User {
     private int Uid;
-    private String email, phone, avatar_url, username, password;
+    private String email;
+    private String phone;
+    private String avatar_url;
+    private String username;
 
-    public User() {
-    }
-
-    public User(String email, String avatar_url, String username, String password) {
+    public User(String email, String avatar_url, String username, String phone) {
         this.email = email;
-        this.password = password;
         this.avatar_url = avatar_url;
         this.username = username;
+        this.phone = phone;
     }
 
     public int getUid() {

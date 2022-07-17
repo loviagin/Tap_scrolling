@@ -48,6 +48,7 @@
             style="@style/ButtonOnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onVKRegisterClick"
             android:text="@string/vk_text" />
 
         <com.google.android.material.button.MaterialButton

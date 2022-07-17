@@ -1,11 +1,9 @@
-package ru.loviagin.tapscrolling.data;
+package ru.loviagin.tapscrolling.objects;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.viewpager2.widget.ViewPager2;
@@ -17,8 +15,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 
 import ru.loviagin.tapscrolling.R;
-import ru.loviagin.tapscrolling.activities.MainActivity;
 import ru.loviagin.tapscrolling.adapters.VideoAdapter;
+import ru.loviagin.tapscrolling.data.IntelligentVideo;
+import ru.loviagin.tapscrolling.objects.Comment;
 
 public class Video {
     private String video_url;

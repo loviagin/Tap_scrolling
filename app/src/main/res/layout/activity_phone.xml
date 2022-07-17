@@ -22,9 +22,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:ems="10"
-            android:text="+7"
             android:hint="@string/phone_text"
             android:inputType="phone"
+            android:minHeight="48dp"
+            android:text="+7"
             tools:ignore="HardcodedText" />
 
 
@@ -35,7 +36,7 @@
             android:layout_margin="10dp"
             android:ems="10"
             android:hint="Введите код из СМС"
-            android:inputType="textPassword"
+            android:inputType="number"
             android:minHeight="48dp"
             android:visibility="invisible" />
 

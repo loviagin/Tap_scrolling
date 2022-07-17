@@ -24,7 +24,7 @@ import java.util.List;
 import ru.loviagin.tapscrolling.R;
 import ru.loviagin.tapscrolling.adapters.VideoAdapter;
 import ru.loviagin.tapscrolling.data.IntelligentVideo;
-import ru.loviagin.tapscrolling.data.Video;
+import ru.loviagin.tapscrolling.objects.Video;
 
 public class MainActivity extends AppCompatActivity {
 

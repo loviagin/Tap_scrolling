@@ -33,14 +33,8 @@ public class EmailActivity extends AppCompatActivity {
 
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPass = findViewById(R.id.editTextPassword);
-      //  button = findViewById(R.id.buttonContinueEmail);
 
         mAuth = FirebaseAuth.getInstance();
-
-//        button.setOnClickListener(view -> {
-//
-//        });
-
     }
 
 
@@ -56,7 +50,6 @@ public class EmailActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Intent intent = new Intent(EmailActivity.this, RegisterContinueActivity.class);
                             intent.putExtra("email", editTextEmail.getText().toString().trim());
-                            intent.putExtra("password", editTextPass.getText().toString().trim());
                             startActivity(intent);
                             Toast.makeText(EmailActivity.this, "SUCCESS",
                                     Toast.LENGTH_SHORT).show();

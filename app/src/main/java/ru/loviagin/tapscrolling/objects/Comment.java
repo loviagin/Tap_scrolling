@@ -1,4 +1,4 @@
-package ru.loviagin.tapscrolling.data;
+package ru.loviagin.tapscrolling.objects;
 
 import java.util.HashMap;
 import java.util.Map;

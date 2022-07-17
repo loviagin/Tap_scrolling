@@ -1,7 +1,10 @@
 package ru.loviagin.tapscrolling.activities;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,11 +30,13 @@ import ru.loviagin.tapscrolling.R;
 
 public class PhoneActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
     private EditText editTextPhone;
     private EditText editTextOTP;
     private Button buttonSend, buttonVerify;
-    String verificationId;
+    private String verificationId;
+
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +47,7 @@ public class PhoneActivity extends AppCompatActivity {
         }
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         editTextPhone = findViewById(R.id.editTextPhone);
         editTextOTP = findViewById(R.id.editTextCode);
@@ -91,18 +99,40 @@ public class PhoneActivity extends AppCompatActivity {
             };
 
     private void verifyCode(String code) {
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
-        signingByCredentials(credential);
+        try {
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+            signingByCredentials(credential);
+        } catch (Exception ignored){
+            Toast.makeText(this, "Неправильный код", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void signingByCredentials(PhoneAuthCredential credential) {
-        mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    //success
-                    startActivity(new Intent(PhoneActivity.this, RegisterContinueActivity.class));
-                }
+        mAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                //success
+                db.collection("users")
+                        .whereEqualTo("phone", editTextPhone.getText().toString().trim())
+                        .get()
+                        .addOnCompleteListener(task0 -> {
+                            if (task0.isSuccessful()) {
+                                int count = 0;
+                                for (DocumentSnapshot document : task0.getResult()) {
+                                    count++;
+                                }
+                                if (count == 0) {
+                                    startActivity(new Intent(PhoneActivity.this, RegisterContinueActivity.class)
+                                            .putExtra("phone", editTextPhone.getText().toString().trim()));
+                                } else {
+                                    startActivity(new Intent(PhoneActivity.this, MainActivity.class));
+                                    Toast.makeText(PhoneActivity.this, "С возвращением!", Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        });
+                //startActivity(new Intent(PhoneActivity.this, RegisterContinueActivity.class));
             }
         });
     }
