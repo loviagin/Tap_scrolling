@@ -52,6 +52,9 @@ public class RegisterContinueActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_continue);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
 
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();

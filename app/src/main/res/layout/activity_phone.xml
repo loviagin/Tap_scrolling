@@ -15,14 +15,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
         <EditText
             android:id="@+id/editTextPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:ems="10"
+            android:text="+7"
             android:hint="@string/phone_text"
-            android:inputType="phone" />
+            android:inputType="phone"
+            tools:ignore="HardcodedText" />
+
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextCode"
@@ -30,20 +34,30 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:ems="10"
-            android:visibility="invisible"
             android:hint="Введите код из СМС"
             android:inputType="textPassword"
-            android:minHeight="48dp" />
+            android:minHeight="48dp"
+            android:visibility="invisible" />
 
 
         <Button
-            android:id="@+id/buttonContinueEmail"
+            android:id="@+id/buttonGetOTP"
             style="@style/ButtonOnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:onClick="onClickSMSSend"
             android:text="Получить код" />
+
+        <Button
+            android:id="@+id/buttonContinuePhone"
+            style="@style/ButtonOnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:onClick="onClickPhoneContinue"
+            android:text="Проверить"
+            android:visibility="invisible" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
