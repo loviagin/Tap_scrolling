@@ -7,6 +7,7 @@ import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.vk.api.sdk.VK;
+import com.vk.api.sdk.auth.VKScope;
 
 import ru.loviagin.tapscrolling.R;
 
@@ -50,28 +53,20 @@ public class AuthorizeActivity extends AppCompatActivity {
                     String username = credential.getId();
                     String password = credential.getPassword();
                     if (idToken !=  null) {
-                        // Got an ID token from Google. Use it to authenticate
-                        // with Firebase.
                         AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
                         mAuth.signInWithCredential(firebaseCredential)
-                                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        if (task.isSuccessful()) {
-                                            // Sign in success, update UI with the signed-in user's information
-                                            Log.d(TAG, "signInWithCredential:success");
-                                            FirebaseUser user = mAuth.getCurrentUser();
-                                            //updateUI(user);
-                                        } else {
-                                            // If sign in fails, display a message to the user.
-                                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                                            //updateUI(null);
-                                        }
+                                .addOnCompleteListener(this, task -> {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d(TAG, "signInWithCredential:success");
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        startActivity(new Intent(AuthorizeActivity.this, MainActivity.class));
+                                    } else {
+                                        Log.w(TAG, "signInWithCredential:failure", task.getException());
+                                        Toast.makeText(this, "Ошибка получения аккаунта", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     } else if (password != null) {
-                        // Got a saved username and password. Use them to authenticate
-                        // with your backend.
                         Log.d(TAG, "Got password.");
                     }
                 } catch (ApiException e) {
@@ -113,7 +108,7 @@ public class AuthorizeActivity extends AppCompatActivity {
                 .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                         .setSupported(true)
                         .setServerClientId(getString(R.string.default_web_client_id))
-                        .setFilterByAuthorizedAccounts(true)
+                        .setFilterByAuthorizedAccounts(false)
                         .build())
                 // Automatically sign in when exactly one credential is retrieved.
                 .setAutoSelectEnabled(false)
@@ -126,26 +121,16 @@ public class AuthorizeActivity extends AppCompatActivity {
 
     public void onGoogleRegisterClick(View view) {
         oneTapClient.beginSignIn(signInRequest)
-                .addOnSuccessListener(this, new OnSuccessListener<BeginSignInResult>() {
-                    @Override
-                    public void onSuccess(BeginSignInResult result) {
-                        try {
-                            startIntentSenderForResult(
-                                    result.getPendingIntent().getIntentSender(), REQ_ONE_TAP,
-                                    null, 0, 0, 0);
-                        } catch (IntentSender.SendIntentException e) {
-                            Log.e(TAG, "Couldn't start One Tap UI: " + e.getLocalizedMessage());
-                        }
+                .addOnSuccessListener(this, result -> {
+                    try {
+                        startIntentSenderForResult(
+                                result.getPendingIntent().getIntentSender(), REQ_ONE_TAP,
+                                null, 0, 0, 0);
+                    } catch (IntentSender.SendIntentException e) {
+                        Log.e(TAG, "Couldn't start One Tap UI: " + e.getLocalizedMessage());
                     }
                 })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // No saved credentials found. Launch the One Tap sign-up flow, or
-                        // do nothing and continue presenting the signed-out UI.
-                        Log.d(TAG, e.getLocalizedMessage());
-                    }
-                });
+                .addOnFailureListener(this, e -> Log.d(TAG, e.getLocalizedMessage()));
     }
 
     public void onPhoneRegisterClick(View view) {
@@ -153,10 +138,6 @@ public class AuthorizeActivity extends AppCompatActivity {
     }
 
     public void onVKRegisterClick(View view) {
-//        startActivity(new Intent(this, RegisterContinueActivity.class)
-//                .putExtra("email", "test.ru")
-//                .putExtra("password", "pass")
-//                .putExtra("phone", "+79284207668")
-//        );
+        VK.login(this, arrayListOf(VKScope.EMAIL));
     }
 }

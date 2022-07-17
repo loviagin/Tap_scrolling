@@ -38,7 +38,7 @@
             android:hint="Введите код из СМС"
             android:inputType="number"
             android:minHeight="48dp"
-            android:visibility="invisible" />
+            android:visibility="gone" />
 
 
         <Button
@@ -58,7 +58,7 @@
             android:layout_margin="10dp"
             android:onClick="onClickPhoneContinue"
             android:text="Проверить"
-            android:visibility="invisible" />
+            android:visibility="gone" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

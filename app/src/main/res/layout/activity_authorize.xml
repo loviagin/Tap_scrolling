@@ -11,6 +11,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -32,16 +34,16 @@
             style="@style/ButtonOnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/google_text"
-            android:onClick="onGoogleRegisterClick" />
+            android:onClick="onGoogleRegisterClick"
+            android:text="@string/google_text" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonPhone"
             style="@style/ButtonOnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/phone_register_text"
-            android:onClick="onPhoneRegisterClick"/>
+            android:onClick="onPhoneRegisterClick"
+            android:text="@string/phone_register_text" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonVk"
@@ -56,7 +58,7 @@
             style="@style/ButtonOnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/email_register_text"
-            android:onClick="onEmailRegisterClick"/>
+            android:onClick="onEmailRegisterClick"
+            android:text="@string/email_register_text" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

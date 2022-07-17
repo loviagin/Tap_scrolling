@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "1051061850060-vulp3kd2hj3bl9b9bc8k7tudti8365gp.apps.googleusercontent.com",
+          "client_id": "1051061850060-ub492secalt0gvieuj8iu9vsel53jqt7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "ru.loviagin.tapscrolling",
-            "certificate_hash": "9c2690d5e1c4287ea39d383de2aba264b7755487"
+            "certificate_hash": "d003fc2b5332abcd96e9b37f82459f291c936e36"
           }
         },
         {
