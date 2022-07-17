@@ -8,11 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private List<Video> videos;
 
     static int mPageLastScreen = 0;
-    private static boolean isFirst = true;
     private static boolean isRegistered = false;
 
 //    private int VIDEOS_COUNT = 10;
@@ -100,22 +97,16 @@ public class MainActivity extends AppCompatActivity {
 //                }
     }
 
-    public static boolean isFirst() {
-        return isFirst;
-    }
-
     public static boolean isRegistered() {
         return isRegistered;
-    }
-
-    public static void setFirst(boolean first) {
-        isFirst = first;
     }
 
     private void isRegister() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             isRegistered = true;
+        } else {
+            isRegistered = false;
         }
     }
 
@@ -179,10 +170,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onNotificationsClick(View view) {
-        startActivity(new Intent(this, NotificationsActivity.class));
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            startActivity(new Intent(this, NotificationsActivity.class));
+        } else {
+            startActivity(new Intent(this, AuthorizeActivity.class));
+        }
+
     }
 
     public void onProfileClick(View view) {
-        startActivity(new Intent(this, ProfileActivity.class));
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            startActivity(new Intent(this, ProfileActivity.class));
+        } else {
+            startActivity(new Intent(this, AuthorizeActivity.class));
+        }
+
     }
 }

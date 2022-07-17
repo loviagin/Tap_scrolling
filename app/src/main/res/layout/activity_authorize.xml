@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.RegisterActivity">
+    tools:context=".activities.AuthorizeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="45dp"
-            android:text="@string/register_text"
+            android:text="@string/authorize_text"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="36sp"
@@ -32,15 +32,16 @@
             style="@style/ButtonOnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/google_text"/>
-<!--            android:onClick="onGoogleRegisterClick"-->
+            android:text="@string/google_text"
+            android:onClick="onGoogleRegisterClick" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonPhone"
             style="@style/ButtonOnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/phone_register_text" />
+            android:text="@string/phone_register_text"
+            android:onClick="onPhoneRegisterClick"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonVk"

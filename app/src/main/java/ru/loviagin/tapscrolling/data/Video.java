@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -46,7 +47,11 @@ public class Video {
 
     public Video(VideoAdapter adapter, ViewPager2 viewPager) {
         for (int i = 0; i < 3; i++) {
-            this.video_id = IntelligentVideo.getRandomInt();
+            if (IntelligentVideo.getRandomInt() == -1){
+                Toast.makeText(viewPager.getContext(), "Вы просмотрели все видео", Toast.LENGTH_SHORT).show();
+            }else {
+                this.video_id = IntelligentVideo.getRandomInt();
+            }
             docRef = db.collection("videos").document(String.valueOf(video_id));
             docRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
@@ -87,9 +92,8 @@ public class Video {
                 }
             });
         }
-        if (MainActivity.isFirst()) {
+        if (viewPager.getAdapter() == null){
             viewPager.setAdapter(adapter);
-            MainActivity.setFirst(false);
         }
     }
 

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import ru.loviagin.tapscrolling.R;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -15,11 +17,6 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
     }
-
-
-
-
-
 
     public void onHomeClick(View view) {
         startActivity(new Intent(this, MainActivity.class));
@@ -35,5 +32,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void onProfileClick(View view) {
         startActivity(new Intent(this, ProfileActivity.class));
+    }
+
+    public void logout(View view) {
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

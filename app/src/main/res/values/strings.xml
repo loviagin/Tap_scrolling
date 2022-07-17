@@ -12,4 +12,9 @@
     <string name="email_enter_text">Введите свой email</string>
     <string name="register">Зарегистрироваться</string>
     <string name="password_text">Придумайте пароль</string>
+    <string name="fill_all_fields">Заполните все поля</string>
+    <string name="continue_text">Продолжить</string>
+    <string name="authorize_text">Авторизация</string>
+    <string name="avatar_upload_text">Загрузить аватарку</string>
+    <string name="phone_text">Введите номер телефона</string>
 </resources>

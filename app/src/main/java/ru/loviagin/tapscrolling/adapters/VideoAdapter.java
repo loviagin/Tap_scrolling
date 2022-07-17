@@ -26,7 +26,7 @@ import java.util.List;
 
 import ru.loviagin.tapscrolling.R;
 import ru.loviagin.tapscrolling.activities.MainActivity;
-import ru.loviagin.tapscrolling.activities.RegisterActivity;
+import ru.loviagin.tapscrolling.activities.AuthorizeActivity;
 import ru.loviagin.tapscrolling.data.Comment;
 import ru.loviagin.tapscrolling.data.Video;
 
@@ -94,21 +94,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     @Override
     public void onBindViewHolder(@NonNull VideoViewHolder holder, int position) {
         Video video = videos.get(position);
-        int likes_count = video.getLikes_count();
-        if (likes_count >= 1000 && likes_count < 1000000) {
-            double count = (double) likes_count / 1000;
-            if (likes_count % 1000 == 0) {
-                holder.textViewLikesCount.setText(String.format("%sК", (int) count));
-            } else {
-                holder.textViewLikesCount.setText(String.format("%sК", count));
-            }
-
-        } else if (likes_count >= 1000000) {
-            double count = (double) likes_count / 1000000;
-            holder.textViewLikesCount.setText(String.format("%sМ", count));
-        } else {
-            holder.textViewLikesCount.setText(String.valueOf(likes_count));
-        }
+        setLikes(video, holder);
         holder.textViewRepliesCount.setText(String.valueOf(video.getReplies_count()));
 
         try {
@@ -134,14 +120,33 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         if (MainActivity.isRegistered()) {
             holder.imageButtonLike.setOnClickListener(v -> {
                 video.addLike(holder.imageButtonLike);
+                setLikes(video, holder);
                 // holder.itemView.startAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.shake));
             });
         } else {
-            holder.imageButtonLike.setOnClickListener(view -> context.startActivity(new Intent(context, RegisterActivity.class)));
-            holder.imageButtonComment.setOnClickListener(view -> context.startActivity(new Intent(context, RegisterActivity.class)));
-            holder.imageButtonReply.setOnClickListener(view -> context.startActivity(new Intent(context, RegisterActivity.class)));
+            holder.imageButtonLike.setOnClickListener(view -> context.startActivity(new Intent(context, AuthorizeActivity.class)));
+            holder.imageButtonComment.setOnClickListener(view -> context.startActivity(new Intent(context, AuthorizeActivity.class)));
+            holder.imageButtonReply.setOnClickListener(view -> context.startActivity(new Intent(context, AuthorizeActivity.class)));
         }
 
+    }
+
+    private void setLikes(Video video, VideoViewHolder holder){
+        int likes_count = video.getLikes_count();
+        if (likes_count >= 1000 && likes_count < 1000000) {
+            double count = (double) likes_count / 1000;
+            if (likes_count % 1000 == 0) {
+                holder.textViewLikesCount.setText(String.format("%sК", (int) count));
+            } else {
+                holder.textViewLikesCount.setText(String.format("%sК", count));
+            }
+
+        } else if (likes_count >= 1000000) {
+            double count = (double) likes_count / 1000000;
+            holder.textViewLikesCount.setText(String.format("%sМ", count));
+        } else {
+            holder.textViewLikesCount.setText(String.valueOf(likes_count));
+        }
     }
 
     @Override
