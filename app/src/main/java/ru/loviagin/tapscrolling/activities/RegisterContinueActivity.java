@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -36,6 +37,7 @@ public class RegisterContinueActivity extends AppCompatActivity {
 
     private EditText editTextUsername;
     private ImageView imageView;
+    private ProgressBar progressBar;
 
     private FirebaseFirestore db;
     private FirebaseStorage storage;
@@ -57,6 +59,7 @@ public class RegisterContinueActivity extends AppCompatActivity {
 
         editTextUsername = findViewById(R.id.editTextUsername);
         imageView = findViewById(R.id.imageViewUploadAvatar);
+        progressBar = findViewById(R.id.progressBarAuthCon);
     }
 
     public void onClickRegister(View view) {
@@ -132,6 +135,7 @@ public class RegisterContinueActivity extends AppCompatActivity {
                                     if (downloadUri != null) {
                                         avatar_url = downloadUri.toString();
                                         Picasso.get().load(downloadUri).into(imageView);
+                                        progressBar.setVisibility(View.GONE);
                                     }
                                 }
                             });
@@ -142,6 +146,7 @@ public class RegisterContinueActivity extends AppCompatActivity {
     );
 
     public void onAvatarUploadClick(View view) {
+        progressBar.setVisibility(View.VISIBLE);
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/jpeg");
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);

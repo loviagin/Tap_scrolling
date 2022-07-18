@@ -9,35 +9,25 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
-import com.google.android.gms.auth.api.identity.BeginSignInResult;
 import com.google.android.gms.auth.api.identity.Identity;
 import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.vk.api.sdk.VK;
-import com.vk.api.sdk.auth.VKScope;
 
 import ru.loviagin.tapscrolling.R;
 
 public class AuthorizeActivity extends AppCompatActivity {
 
     private static final int REQ_ONE_TAP = 2;  // Can be any integer unique to the Activity.
-    private boolean showOneTapUI = true;
     private SignInClient oneTapClient;
     private BeginSignInRequest signInRequest;
     private FirebaseAuth mAuth;
@@ -45,48 +35,46 @@ public class AuthorizeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case REQ_ONE_TAP:
-                try {
-                    SignInCredential credential = oneTapClient.getSignInCredentialFromIntent(data);
-                    String idToken = credential.getGoogleIdToken();
-                    String username = credential.getId();
-                    String password = credential.getPassword();
-                    if (idToken !=  null) {
-                        AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
-                        mAuth.signInWithCredential(firebaseCredential)
-                                .addOnCompleteListener(this, task -> {
-                                    if (task.isSuccessful()) {
-                                        // Sign in success, update UI with the signed-in user's information
-                                        Log.d(TAG, "signInWithCredential:success");
-                                        FirebaseUser user = mAuth.getCurrentUser();
-                                        startActivity(new Intent(AuthorizeActivity.this, MainActivity.class));
-                                    } else {
-                                        Log.w(TAG, "signInWithCredential:failure", task.getException());
-                                        Toast.makeText(this, "Ошибка получения аккаунта", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    } else if (password != null) {
-                        Log.d(TAG, "Got password.");
-                    }
-                } catch (ApiException e) {
-                    switch (e.getStatusCode()) {
-                        case CommonStatusCodes.CANCELED:
-                            Log.d(TAG, "One-tap dialog was closed.");
-                            // Don't re-prompt the user.
-                            showOneTapUI = false;
-                            break;
-                        case CommonStatusCodes.NETWORK_ERROR:
-                            Log.d(TAG, "One-tap encountered a network error.");
-                            // Try again or just ignore.
-                            break;
-                        default:
-                            Log.d(TAG, "Couldn't get credential from result."
-                                    + e.getLocalizedMessage());
-                            break;
-                    }
+        if (requestCode == REQ_ONE_TAP) {
+            try {
+                SignInCredential credential = oneTapClient.getSignInCredentialFromIntent(data);
+                String idToken = credential.getGoogleIdToken();
+                String password = credential.getPassword();
+                if (idToken != null) {
+                    AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
+                    mAuth.signInWithCredential(firebaseCredential)
+                            .addOnCompleteListener(this, task -> {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Log.d(TAG, "signInWithCredential:success");
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    startActivity(new Intent(AuthorizeActivity.this, MainActivity.class));
+                                } else {
+                                    Log.w(TAG, "signInWithCredential:failure", task.getException());
+                                    Toast.makeText(this, "Ошибка получения аккаунта", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                } else if (password != null) {
+                    Log.d(TAG, "Got password.");
                 }
-                break;
+            } catch (ApiException e) {
+                switch (e.getStatusCode()) {
+                    case CommonStatusCodes.CANCELED:
+                        Log.d(TAG, "One-tap dialog was closed.");
+                        Toast.makeText(this, "Не найден Google аккаунт", Toast.LENGTH_SHORT).show();
+                        boolean showOneTapUI = false;
+                        break;
+                    case CommonStatusCodes.NETWORK_ERROR:
+                        Log.d(TAG, "One-tap encountered a network error.");
+                        Toast.makeText(this, "Не найден Google аккаунт", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Log.d(TAG, "Couldn't get credential from result."
+                                + e.getLocalizedMessage());
+                        Toast.makeText(this, "Не найден Google аккаунт", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
         }
     }
 
@@ -135,9 +123,5 @@ public class AuthorizeActivity extends AppCompatActivity {
 
     public void onPhoneRegisterClick(View view) {
         startActivity(new Intent(this, PhoneActivity.class));
-    }
-
-    public void onVKRegisterClick(View view) {
-        VK.login(this, arrayListOf(VKScope.EMAIL));
     }
 }

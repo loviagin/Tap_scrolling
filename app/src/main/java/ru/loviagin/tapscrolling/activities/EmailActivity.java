@@ -51,8 +51,8 @@ public class EmailActivity extends AppCompatActivity {
                             Intent intent = new Intent(EmailActivity.this, RegisterContinueActivity.class);
                             intent.putExtra("email", editTextEmail.getText().toString().trim());
                             startActivity(intent);
-                            Toast.makeText(EmailActivity.this, "SUCCESS",
-                                    Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(EmailActivity.this, "SUCCESS",
+//                                    Toast.LENGTH_SHORT).show();
                         } else {
                                 mAuth.signInWithEmailAndPassword(editTextEmail.getText().toString().trim(), editTextPass.getText().toString().trim())
                                         .addOnCompleteListener(this, task1 -> {

@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_auth"
+    android:backgroundTint="@color/white_50"
+    android:backgroundTintMode="multiply"
     tools:context=".activities.AuthorizeActivity">
 
     <LinearLayout
@@ -19,7 +22,7 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="45dp"
+            android:layout_marginBottom="30dp"
             android:text="@string/authorize_text"
             android:textAlignment="center"
             android:textColor="@color/black"
@@ -34,6 +37,8 @@
             style="@style/ButtonOnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/common_google_signin_btn_icon_light"
+            android:drawableTintMode="multiply"
             android:onClick="onGoogleRegisterClick"
             android:text="@string/google_text" />
 
@@ -42,22 +47,26 @@
             style="@style/ButtonOnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableLeft="@android:drawable/stat_sys_phone_call"
+            android:drawableTint="#2B8EFF"
             android:onClick="onPhoneRegisterClick"
             android:text="@string/phone_register_text" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonVk"
-            style="@style/ButtonOnRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onVKRegisterClick"
-            android:text="@string/vk_text" />
+        <!--        <com.google.android.material.button.MaterialButton-->
+        <!--            android:id="@+id/buttonVk"-->
+        <!--            style="@style/ButtonOnRegister"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:onClick="onVKRegisterClick"-->
+        <!--            android:text="@string/vk_text" />-->
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonEmail"
             style="@style/ButtonOnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableLeft="@android:drawable/sym_action_email"
+            android:drawableTint="#2B8EFF"
             android:onClick="onEmailRegisterClick"
             android:text="@string/email_register_text" />
     </LinearLayout>

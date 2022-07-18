@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_auth"
+    android:backgroundTint="@color/white_50"
+    android:backgroundTintMode="multiply"
     tools:context=".activities.PhoneActivity">
 
     <LinearLayout
@@ -15,6 +18,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Вход по телефону"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="36sp" />
 
         <EditText
             android:id="@+id/editTextPhone"
