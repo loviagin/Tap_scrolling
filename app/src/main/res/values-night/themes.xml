@@ -27,7 +27,7 @@
     </style>
 
     <style name="BottomBar">
-        <item name="android:background">@color/black</item>
+        <item name="android:backgroundTint">@color/black</item>
     </style>
 
     <style name="ButtonVideoItem">

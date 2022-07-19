@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bottom_bar"
+    android:id="@+id/ts_down_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="10dp"
@@ -11,7 +11,7 @@
     app:layout_constraintStart_toStartOf="parent">
 
     <LinearLayout
-        android:id="@+id/linearLayout4"
+        android:id="@+id/linearLayout5"
         style="@style/BottomBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,17 +62,17 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
+        android:layout_marginEnd="20dp"
         android:clickable="true"
         android:focusable="true"
-        android:onClick="onRecordButtonClick"
         android:scaleType="center"
         app:backgroundTint="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout4"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout4"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout5"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout5"
         app:maxImageSize="30dp"
         app:srcCompat="@drawable/ic_ts_logo"
+        android:onClick="onRecordButtonClick"
         android:contentDescription="Запись видео" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

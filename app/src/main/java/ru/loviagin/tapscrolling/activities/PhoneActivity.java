@@ -73,7 +73,7 @@ public class PhoneActivity extends AppCompatActivity {
         buttonVerify.setVisibility(View.VISIBLE);
     }
 
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks =
+    private final PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks =
             new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
                 @Override
@@ -118,7 +118,7 @@ public class PhoneActivity extends AppCompatActivity {
                         .addOnCompleteListener(task0 -> {
                             if (task0.isSuccessful()) {
                                 int count = 0;
-                                for (DocumentSnapshot document : task0.getResult()) {
+                                for (DocumentSnapshot ignored : task0.getResult()) {
                                     count++;
                                 }
                                 if (count == 0) {
@@ -131,8 +131,8 @@ public class PhoneActivity extends AppCompatActivity {
                             } else {
                                 Log.d(TAG, "Error getting documents: ", task.getException());
                             }
-                        });
-                //startActivity(new Intent(PhoneActivity.this, RegisterContinueActivity.class));
+                        }
+                );
             }
         });
     }

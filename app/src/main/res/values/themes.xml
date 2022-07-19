@@ -35,15 +35,20 @@
     </style>
 
     <style name="ButtonBottomBar">
-        <item name="android:layout_weight">1</item>
+        <item name="android:layout_weight">2</item>
         <item name="android:backgroundTint">@color/transparent</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_margin">10dp</item>
         <item name="android:tint">@color/purple_200</item>
     </style>
 
+    <style name="ButtonRecord">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:tint">@color/purple_200</item>
+    </style>
+
     <style name="BottomBar">
-        <item name="android:background">@color/gray_10</item>
+        <item name="android:background">@color/white</item>
     </style>
 
     <style name="ButtonVideoItem">

@@ -176,7 +176,15 @@ public class MainActivity extends AppCompatActivity {
         } else {
             startActivity(new Intent(this, AuthorizeActivity.class));
         }
+    }
 
+    public void onRecordButtonClick(View view) {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            startActivity(new Intent(this, RecordActivity.class));
+        } else {
+            startActivity(new Intent(this, AuthorizeActivity.class));
+        }
     }
 
     public void onProfileClick(View view) {
@@ -186,6 +194,5 @@ public class MainActivity extends AppCompatActivity {
         } else {
             startActivity(new Intent(this, AuthorizeActivity.class));
         }
-
     }
 }
