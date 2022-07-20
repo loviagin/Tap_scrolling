@@ -5,7 +5,6 @@
     android:id="@+id/bottom_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="10dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent">
@@ -15,7 +14,8 @@
         style="@style/BottomBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:background="@drawable/layout_rounded"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -59,20 +59,6 @@
 
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="onRecordButtonClick"
-        android:scaleType="center"
-        app:backgroundTint="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout4"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout4"
-        app:maxImageSize="30dp"
-        app:srcCompat="@drawable/ic_ts_logo"
-        android:contentDescription="Запись видео" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

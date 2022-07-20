@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/bottom_bar_onmain"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,11 +34,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="35dp"
+        android:clickable="true"
+        android:contentDescription="@string/record_video_text"
+        android:focusable="true"
+        android:onClick="onRecordButtonClick"
+        android:scaleType="center"
+        android:tintMode="multiply"
+        app:backgroundTint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_bar_onmain"
+        app:layout_constraintEnd_toEndOf="@+id/bottom_bar_onmain"
+        app:layout_constraintTop_toTopOf="@+id/bottom_bar_onmain"
+        app:maxImageSize="30dp"
+        app:srcCompat="@drawable/ic_ts_logo"
+        app:tint="@color/white" />
+
     <include
         android:id="@+id/bottom_bar_onmain"
         layout="@layout/ts_bottom_bar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

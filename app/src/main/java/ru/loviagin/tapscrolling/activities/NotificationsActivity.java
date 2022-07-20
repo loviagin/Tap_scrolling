@@ -6,14 +6,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import ru.loviagin.tapscrolling.R;
 
 public class NotificationsActivity extends AppCompatActivity {
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notifications);
+
+        mAuth = FirebaseAuth.getInstance();
     }
 
 
@@ -35,5 +42,14 @@ public class NotificationsActivity extends AppCompatActivity {
 
     public void onProfileClick(View view) {
         startActivity(new Intent(this, ProfileActivity.class));
+    }
+
+    public void onRecordButtonClick(View view) {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            startActivity(new Intent(this, RecordActivity.class));
+        } else {
+            startActivity(new Intent(this, AuthorizeActivity.class));
+        }
     }
 }

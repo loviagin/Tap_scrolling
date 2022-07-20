@@ -4,7 +4,7 @@
 
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimaryVariant">@color/blue</item>
         <item name="colorOnPrimary">@color/gray_50</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -39,16 +39,16 @@
         <item name="android:backgroundTint">@color/transparent</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_margin">10dp</item>
-        <item name="android:tint">@color/purple_200</item>
+        <item name="android:tint">@color/blue</item>
     </style>
 
     <style name="ButtonRecord">
         <item name="android:backgroundTint">@color/white</item>
-        <item name="android:tint">@color/purple_200</item>
+        <item name="android:tint">@color/purple</item>
     </style>
 
     <style name="BottomBar">
-        <item name="android:background">@color/white</item>
+        <item name="android:backgroundTint">@color/white</item>
     </style>
 
     <style name="ButtonVideoItem">
