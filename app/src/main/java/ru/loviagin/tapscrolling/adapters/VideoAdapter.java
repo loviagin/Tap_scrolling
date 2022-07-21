@@ -60,7 +60,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             int videoId,
             String video_url,
             int video_id,
-            int user_id,
+            String user_id,
             int replies_count,
             int likes_count,
             int video_views,
@@ -101,6 +101,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             Picasso.get().load(Uri.parse(video.getAvatar_url())).placeholder(R.drawable.user).into(holder.imageView);
         } catch (Exception e) {
             Log.i("App exc", "Err load img");
+        }
+
+        if (video.isLike()){
+            holder.imageButtonLike.setImageResource(R.drawable.ic_like_fill);
+            holder.imageButtonLike.setColorFilter(R.color.red);
         }
 
 //        holder.textViewCommentsCount.setText(String.valueOf(video.getComments_array().get(position).getCountOfComments()));

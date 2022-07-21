@@ -92,17 +92,27 @@ public class DiscoverActivity extends AppCompatActivity {
     }
 
     public void onNotificationsClick(View view) {
-        startActivity(new Intent(this, NotificationsActivity.class));
-    }
-
-    public void onProfileClick(View view) {
-        startActivity(new Intent(this, ProfileActivity.class));
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            startActivity(new Intent(this, NotificationsActivity.class));
+        } else {
+            startActivity(new Intent(this, AuthorizeActivity.class));
+        }
     }
 
     public void onRecordButtonClick(View view) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             startActivity(new Intent(this, RecordActivity.class));
+        } else {
+            startActivity(new Intent(this, AuthorizeActivity.class));
+        }
+    }
+
+    public void onProfileClick(View view) {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            startActivity(new Intent(this, ProfileActivity.class));
         } else {
             startActivity(new Intent(this, AuthorizeActivity.class));
         }

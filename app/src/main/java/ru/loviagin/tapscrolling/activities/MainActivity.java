@@ -118,22 +118,22 @@ public class MainActivity extends AppCompatActivity {
 
         new Video(adapter, viewPagerVideos);
 
-        viewPagerVideos.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                videoView = findViewById(R.id.videoView);
-                if (mPageLastScreen < position) {
-                    Log.d("page scrolled", "Page scrolled down");
-                    Thread thread = new Thread(() -> new Video(adapter, viewPagerVideos));
-                    thread.start();
-                } else {
-                    Log.d("page scrolled", "Page scrolled back");
-                }
-                videoView.start();
-                mPageLastScreen = position;
-            }
-        });
+//        viewPagerVideos.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+//                videoView = findViewById(R.id.videoView);
+//                if (mPageLastScreen < position) {
+//                    Log.d("page scrolled", "Page scrolled down");
+//                    Thread thread = new Thread(() -> new Video(adapter, viewPagerVideos));
+//                    thread.start();
+//                } else {
+//                    Log.d("page scrolled", "Page scrolled back");
+//                }
+//                videoView.start();
+//                mPageLastScreen = position;
+//            }
+//        });
     }
 
     @Override

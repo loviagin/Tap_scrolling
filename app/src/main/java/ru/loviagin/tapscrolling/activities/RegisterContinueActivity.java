@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -42,6 +43,7 @@ public class RegisterContinueActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseStorage storage;
     private StorageReference reference;
+    private FirebaseAuth mAuth;
 
     private String avatar_url = "";
 
@@ -56,6 +58,7 @@ public class RegisterContinueActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         reference = storage.getReference();
+        mAuth = FirebaseAuth.getInstance();
 
         editTextUsername = findViewById(R.id.editTextUsername);
         imageView = findViewById(R.id.imageViewUploadAvatar);
@@ -66,14 +69,24 @@ public class RegisterContinueActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String email = "";
         String phone = "";
+        String name = "";
+        String idToken = null;
         if (intent.hasExtra("email")) {
             email = intent.getStringExtra("email");
         }
         if (intent.hasExtra("email")) {
             phone = intent.getStringExtra("phone");
         }
+        if (intent.hasExtra("idToken")) {
+            idToken = intent.getStringExtra("idToken");
+        }
+        if (intent.hasExtra("name")) {
+            name = intent.getStringExtra("name");
+        }
         String finalEmail = email;
         String finalPhone = phone;
+        String finalIdToken = idToken;
+        String finalName = name;
         db.collection("users")
                 .whereEqualTo("username", editTextUsername.getText().toString().trim())
                 .get()
@@ -87,9 +100,9 @@ public class RegisterContinueActivity extends AppCompatActivity {
                         }
                         if (count == 0) {
                             if (editTextUsername.getText().toString().trim().isEmpty()) {
-                                createAccount(finalEmail, avatar_url, "user", finalPhone);
+                                createAccount(finalEmail, avatar_url, "user", finalPhone, finalIdToken, finalName);
                             } else {
-                                createAccount(finalEmail, avatar_url, editTextUsername.getText().toString().trim(), finalPhone);
+                                createAccount(finalEmail, avatar_url, editTextUsername.getText().toString().trim(), finalPhone, finalIdToken, finalName);
                             }
 
                             startActivity(new Intent(RegisterContinueActivity.this, MainActivity.class));
@@ -103,15 +116,16 @@ public class RegisterContinueActivity extends AppCompatActivity {
 
     }
 
-    private void createAccount(String email, String avatar_url, String username, String phone) {
-        User user = new User(email, avatar_url, username, phone);
+    private void createAccount(String email, String avatar_url, String username, String phone, String idToken, String name) {
+        User user;
+        if (idToken != null) {
+            user = new User(email, avatar_url, username, phone, idToken, name);
+        } else {
+            user = new User(email, avatar_url, username, phone, name);
+        }
+
         Log.i("TAG3545", "" + user);
-        db.collection("users").add(user).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentReference> task) {
-                Log.i("exc", "Created account");
-            }
-        });
+        db.collection("users").document(mAuth.getCurrentUser().getUid()).set(user).addOnCompleteListener(task -> Log.i("exc", "Created account"));
     }
 
     private final ActivityResultLauncher<Intent> startActivityGetContent = registerForActivityResult(

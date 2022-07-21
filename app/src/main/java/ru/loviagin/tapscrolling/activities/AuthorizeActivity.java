@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.helper.widget.MotionEffect;
 
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.identity.Identity;
@@ -22,6 +23,8 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import ru.loviagin.tapscrolling.R;
 
@@ -31,6 +34,7 @@ public class AuthorizeActivity extends AppCompatActivity {
     private SignInClient oneTapClient;
     private BeginSignInRequest signInRequest;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -47,8 +51,27 @@ public class AuthorizeActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "signInWithCredential:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    startActivity(new Intent(AuthorizeActivity.this, MainActivity.class));
+                                    db.collection("users")
+                                            .whereEqualTo("idToken", idToken)
+                                            .get()
+                                            .addOnCompleteListener(task0 -> {
+                                                        if (task0.isSuccessful()) {
+                                                            int count = 0;
+                                                            for (DocumentSnapshot ignored : task0.getResult()) {
+                                                                count++;
+                                                            }
+                                                            if (count == 0) {
+                                                                startActivity(new Intent(AuthorizeActivity.this, RegisterContinueActivity.class)
+                                                                        .putExtra("idToken", idToken).putExtra("name", credential.getDisplayName()));
+                                                            } else {
+                                                                startActivity(new Intent(AuthorizeActivity.this, MainActivity.class));
+                                                                Toast.makeText(AuthorizeActivity.this, "С возвращением!", Toast.LENGTH_LONG).show();
+                                                            }
+                                                        } else {
+                                                            Log.d(MotionEffect.TAG, "Error getting documents: ", task.getException());
+                                                        }
+                                                    }
+                                            );
                                 } else {
                                     Log.w(TAG, "signInWithCredential:failure", task.getException());
                                     Toast.makeText(this, "Ошибка получения аккаунта", Toast.LENGTH_SHORT).show();
@@ -87,6 +110,7 @@ public class AuthorizeActivity extends AppCompatActivity {
         }
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         oneTapClient = Identity.getSignInClient(this);
         signInRequest = BeginSignInRequest.builder()

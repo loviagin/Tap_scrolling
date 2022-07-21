@@ -116,23 +116,23 @@ public class PhoneActivity extends AppCompatActivity {
                         .whereEqualTo("phone", editTextPhone.getText().toString().trim())
                         .get()
                         .addOnCompleteListener(task0 -> {
-                            if (task0.isSuccessful()) {
-                                int count = 0;
-                                for (DocumentSnapshot ignored : task0.getResult()) {
-                                    count++;
+                                    if (task0.isSuccessful()) {
+                                        int count = 0;
+                                        for (DocumentSnapshot ignored : task0.getResult()) {
+                                            count++;
+                                        }
+                                        if (count == 0) {
+                                            startActivity(new Intent(PhoneActivity.this, RegisterContinueActivity.class)
+                                                    .putExtra("phone", editTextPhone.getText().toString().trim()));
+                                        } else {
+                                            startActivity(new Intent(PhoneActivity.this, MainActivity.class));
+                                            Toast.makeText(PhoneActivity.this, "С возвращением!", Toast.LENGTH_LONG).show();
+                                        }
+                                    } else {
+                                        Log.d(TAG, "Error getting documents: ", task.getException());
+                                    }
                                 }
-                                if (count == 0) {
-                                    startActivity(new Intent(PhoneActivity.this, RegisterContinueActivity.class)
-                                            .putExtra("phone", editTextPhone.getText().toString().trim()));
-                                } else {
-                                    startActivity(new Intent(PhoneActivity.this, MainActivity.class));
-                                    Toast.makeText(PhoneActivity.this, "С возвращением!", Toast.LENGTH_LONG).show();
-                                }
-                            } else {
-                                Log.d(TAG, "Error getting documents: ", task.getException());
-                            }
-                        }
-                );
+                        );
             }
         });
     }
